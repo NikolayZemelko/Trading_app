@@ -2,7 +2,14 @@
   {
     "id": 1,
     "role": "Diagnostic radiographer",
-    "name": "Billy"
+    "name": "Billy",
+    "degree": [
+      {
+        "id": 1,
+        "created_at": "2020-01-01T00:00:00",
+        "type_degree": "expert"
+      }
+    ]
   },
   {
     "id": 2,
@@ -12,7 +19,14 @@
   {
     "id": 3,
     "role": "Cytogeneticist",
-    "name": "Dylan"
+    "name": "Dylan",
+    "degree": [
+      {
+        "id": 3,
+        "created_at": "2020-01-01T00:00:00",
+        "type_degree": "newbie"
+      }
+    ]
   },
   {
     "id": 4,
