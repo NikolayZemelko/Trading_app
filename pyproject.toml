@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "trading-app"
+version = "0.1.0"
+description = "FastAPI app"
+authors = ["NikolayZemelko <zemelko1989@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.103.2"}
+flake8 = "^6.1.0"
+
+[tool.poetry.group.dev.dependencies]
+Faker = "^19.6.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
