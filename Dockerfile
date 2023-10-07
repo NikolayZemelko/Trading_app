@@ -4,6 +4,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
+RUN pip freeze > requirements.txt
+
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
