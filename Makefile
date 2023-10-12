@@ -1,5 +1,5 @@
 start:
-	 uvicorn main:app --reload --host 0.0.0.0
+	uvicorn src.main:app --reload --host 0.0.0.0
 
 docker-start:
 	docker-compose build --no-cache

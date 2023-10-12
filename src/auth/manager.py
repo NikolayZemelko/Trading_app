@@ -7,7 +7,8 @@ from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from fastapi_users import models, schemas, exceptions
 
-from src.database import User, get_user_db
+from src.auth.models import User
+from .utils import get_user_db
 
 load_dotenv()
 
