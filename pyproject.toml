@@ -18,6 +18,8 @@ redis-om = "^0.2.1"
 fastapi-cache2 = "^0.2.1"
 celery = "^5.3.4"
 flower = "^2.0.1"
+pytest = "^7.4.2"
+pytest-asyncio = "^0.21.1"
 
 [tool.poetry.group.dev.dependencies]
 Faker = "^19.6.2"
@@ -25,3 +27,9 @@ Faker = "^19.6.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".", "src",
+]
+asyncio_mode="auto"
