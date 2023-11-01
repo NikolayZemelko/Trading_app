@@ -17,7 +17,9 @@ router = APIRouter(
 @router.get("")
 async def get_specific_operations(operation_type: str, session: AsyncSession = Depends(get_async_session)):
     try:
-        query = select(operation).where(operation.c.type == operation_type)
+        query = select(operation.c.type,
+                       operation.c.quantity,
+                       operation.c.date).where(operation.c.type == operation_type)
         result = await session.execute(query.limit(50))
         return {
             "status": "success",
