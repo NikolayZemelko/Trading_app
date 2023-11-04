@@ -1,10 +1,8 @@
-FROM ubuntu:latest
+FROM python:3.10
 
-ENV PYTHONUNBUFFERED 1
+RUN mkdir /fastapi_app
 
-WORKDIR /app
-
-RUN pip freeze > requirements.txt
+WORKDIR /fastapi_app
 
 COPY requirements.txt .
 
@@ -12,4 +10,5 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["make", "start"]
+# Необходимо дать пользователю доступ для запуска bash скриптов
+RUN chmod a+x docker/*.sh

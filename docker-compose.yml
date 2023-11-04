@@ -1,19 +1,68 @@
-version: '3.1'
+version: '3.7'
 
 services:
 
   db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+    image: postgres:15
+# Для удобного нейминга среди большого количества контейнеров
+    container_name: db_app
+# Если в докере уже запущена база данных, выбираем другой порт
+    command: -p 1221
+# Выбрасываем порт на хост PC, для возможности использования
+    expose:
+      - 1221
+    env_file:
+      - .env-non-dev
 
-  web:
-    build: .
-    command: make start
+  redis:
+    image: redis:7
+    container_name: redis_app
+    command: --port 5370
+    expose:
+      - 5370
+
+  app:
+# Так как образа нет, мы выбираем build нашего приложения. Если образ есть в индексе Docker,
+# можно использовать его.
+    build:
+# Выбираем место, где хранится Dockerfile, у нас это текущая директория.
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: fastapi_app
+# Чтобы накатить наши миграции на работающую базу данных, вызываем скрипт
+    command: ["/fastapi_app/docker/app.sh"]
+# Выбираем порт приложения, 1 порт - порт на хост PC, порт на котором запускается
+# gunicorn.
     ports:
-      - "3000:8000"
-    volumes:
-      -  .:/app
+      - 9999:8000
+# Так как работоспособность нашего приложения зависит от запуска контейнеров db и redis,
+# необходимо указать это.
     depends_on:
       - db
+      - redis
+
+
+  celery:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: celery_app
+    command: ["/fastapi_app/docker/celery.sh", "celery"]
+    depends_on:
+      - redis
+
+
+  flower:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: flower_app
+    command: [ "/fastapi_app/docker/celery.sh", "flower" ]
+    depends_on:
+      - redis
+      - celery
+    ports:
+      - 8888:5555

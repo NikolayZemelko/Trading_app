@@ -3,12 +3,12 @@ from fastapi import Depends
 from src.auth.base_config import current_user
 from email.message import EmailMessage
 from celery import Celery
-from src.config import SMTP_USER, SMTP_PASSWORD
+from src.config import SMTP_USER, SMTP_PASSWORD, REDIS_HOST, REDIS_PORT
 
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 465
 
-celery = Celery('tasks', broker='redis://localhost:6379')
+celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
 celery.conf.timezone = 'Europe/Moscow'
 
 
