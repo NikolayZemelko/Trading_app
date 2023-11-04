@@ -1,4 +1,5 @@
 .env
+.env-non-dev
 .idea
 .ipynb_checkpoints
 .mypy_cache

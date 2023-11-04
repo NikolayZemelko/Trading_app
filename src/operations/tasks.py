@@ -1,8 +1,8 @@
 import smtplib
-from fastapi import Depends
-from src.auth.base_config import current_user
 from email.message import EmailMessage
+
 from celery import Celery
+
 from src.config import SMTP_USER, SMTP_PASSWORD, REDIS_HOST, REDIS_PORT
 
 SMTP_HOST = "smtp.gmail.com"
@@ -19,13 +19,16 @@ def get_email_template_dashboard():
     email['To'] = SMTP_USER
 
     email.set_content(
-        '<div>'
-        f'<h1 style="color: red;">Здравствуйте, ваша операция создана! </h1>'
-        '<img src="https://static.vecteezy.com/system/resources/previews/008/295/031/original/custom-relationship'
-        '-management-dashboard-ui-design-template-suitable-designing-application-for-android-and-ios-clean-style-app'
-        '-mobile-free-vector.jpg" width="600">'
-        '</div>',
+        '''<div>
+        <h1 style="color: red;">Здравствуйте, ваша операция создана!</h1>
+        <img src="https://static.vecteezy.com/system/
+        resources/previews/008/295/031/original/custom-relationship
+        -management-dashboard-ui-design-template-suitable-
+        designing-application-for-android-and-ios-clean-style-app
+        -mobile-free-vector.jpg" width="600">
+        </div>,
         subtype='html'
+        '''
     )
 
     return email

@@ -1,7 +1,6 @@
 from typing import List
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
-from pydantic import BaseModel
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -63,7 +62,9 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.broadcast(f"Client #{client_id} says: {data}", add_to_db=True)
+            await manager.broadcast(
+                f"Client #{client_id} says: {data}", add_to_db=True)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat", add_to_db=False)
+        await manager.broadcast(f"Client #{client_id} left the chat",
+                                add_to_db=False)

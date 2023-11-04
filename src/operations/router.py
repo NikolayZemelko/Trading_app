@@ -15,11 +15,15 @@ router = APIRouter(
 
 
 @router.get("")
-async def get_specific_operations(operation_type: str, session: AsyncSession = Depends(get_async_session)):
+async def get_specific_operations(operation_type: str,
+                                  session: AsyncSession =
+                                  Depends(get_async_session)):
     try:
-        query = select(operation.c.type,
-                       operation.c.quantity,
-                       operation.c.date).where(operation.c.type == operation_type)
+        query = select(
+            operation.c.type,
+            operation.c.quantity,
+            operation.c.date).where(
+                operation.c.type == operation_type)
         result = await session.execute(query.limit(50))
         return {
             "status": "success",
@@ -35,8 +39,10 @@ async def get_specific_operations(operation_type: str, session: AsyncSession = D
 
 
 @router.post("")
-async def add_specific_operations(background_tasks: BackgroundTasks, new_operation: OperationCreate,
-                                  session: AsyncSession = Depends(get_async_session)):
+async def add_specific_operations(background_tasks: BackgroundTasks,
+                                  new_operation: OperationCreate,
+                                  session: AsyncSession =
+                                  Depends(get_async_session)):
     stmt = insert(operation).values(**new_operation.model_dump())
     background_tasks.add_task(post_operation)
     post_operation.delay()
